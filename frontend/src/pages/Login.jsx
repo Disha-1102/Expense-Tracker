@@ -20,21 +20,22 @@ function Login() {
       formData.append("password", password);
 
       const response = await api.post(
-        "/login",
-        formData,
-        {
-          headers: {
-            "Content-Type":
-              "application/x-www-form-urlencoded"
-          }
-        }
-      );
+  "/login",
+  formData,
+  {
+    headers: {
+      "Content-Type":
+        "application/x-www-form-urlencoded"
+    }
+  }
+);
 
-      localStorage.setItem(
-        "token",
-        response.data.access_token
-      );
+console.log(response.data);
 
+localStorage.setItem(
+  "token",
+  response.data.access_token
+);
       alert("Login successful!");
 
       navigate("/dashboard");

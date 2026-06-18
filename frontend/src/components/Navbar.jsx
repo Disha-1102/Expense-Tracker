@@ -28,11 +28,11 @@ function Navbar() {
         <h2
   className="fw-bold m-0"
   style={{
-    background: "linear-gradient(90deg, #ec4899, #8b5cf6)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
+    color: "#1E293B",
     letterSpacing: "1px",
-    fontFamily: "'Poppins', sans-serif"
+    fontFamily: 'Montserrat',
+    WebkitTextFillColor: "#010003",
+    opacity: "1"
   }}
 >
   SMART EXPENSE TRACKER

@@ -59,7 +59,7 @@ function Dashboard() {
                             <div
                                 className="card mb-3"
                                 style={{
-                                    backgroundColor: "#72bef5",
+                                    backgroundColor: "#46cbff",
                                     border: "none"
                                 }}
                             >
@@ -74,7 +74,7 @@ function Dashboard() {
                             <div
                                 className="card mb-3"
                                 style={{
-                                    backgroundColor: "#f89ab9",
+                                    backgroundColor: "#46cbff",
                                     border: "none"
                                 }}
                             >
@@ -89,7 +89,7 @@ function Dashboard() {
                             <div
                                 className="card mb-3"
                                 style={{
-                                    backgroundColor: "#9cfca4",
+                                    backgroundColor: "#46cbff",
                                     border: "none"
                                 }}
                             >
@@ -104,7 +104,7 @@ function Dashboard() {
                             <div
                                 className="card mb-3"
                                 style={{
-                                    backgroundColor: "#fdf399",
+                                    backgroundColor: "#46cbff",
                                     border: "none"
                                 }}
                             >

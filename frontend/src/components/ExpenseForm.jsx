@@ -28,7 +28,7 @@ function ExpenseForm() {
       );
 
       alert("Expense added successfully!");
-      window.location.reload();
+      
 
       setCategory("");
       setAmount("");

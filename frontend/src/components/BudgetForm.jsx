@@ -24,7 +24,7 @@ function BudgetForm() {
       );
 
       alert("Budget saved successfully!");
-      window.location.reload();
+      
 
       setMonthlyLimit("");
 

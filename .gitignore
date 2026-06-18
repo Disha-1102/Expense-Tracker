@@ -8,7 +8,7 @@ __pycache__/
 # Node modules
 frontend/node_modules/
 
-# Vite build files
+# Build files
 frontend/dist/
 
 # Environment variables

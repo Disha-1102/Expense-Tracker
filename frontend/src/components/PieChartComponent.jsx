@@ -1,57 +1,94 @@
-import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer
+} from "recharts";
 
 function PieChartComponent({ expenses }) {
 
   const COLORS = [
-    "#D6EAF8",
-    "#D5F5E3",
-    "#E8DAEF",
-    "#FADBD8",
-    "#FCF3CF"
+    "#8B5CF6",
+    "#EC4899",
+    "#10B981",
+    "#F59E0B",
+    "#06B6D4"
   ];
+
+  const categoryData = [];
+
+  expenses.forEach((expense) => {
+
+    const existing = categoryData.find(
+      item => item.name === expense.category
+    );
+
+    if (existing) {
+
+      existing.value += expense.amount;
+
+    }
+
+    else {
+
+      categoryData.push({
+        name: expense.category,
+        value: expense.amount
+      });
+
+    }
+
+  });
 
   return (
 
     <div
-      className="card shadow-sm p-4 mt-4"
+      className="card shadow-lg mt-4 p-4"
       style={{
-        borderRadius: "20px",
-        border: "none"
+        background: "#1E293B",
+        borderRadius: "24px",
+        border: "1px solid rgba(255,255,255,0.08)"
       }}
     >
 
-      <h3 className="text-center mb-4">
+      <h3
+        className="mb-4"
+        style={{
+          color: "white"
+        }}
+      >
         Expense Distribution
       </h3>
 
-      <PieChart width={400} height={300}>
+      <ResponsiveContainer width="100%" height={350}>
 
-        <Pie
-          data={expenses}
-          dataKey="amount"
-          nameKey="category"
-          cx="50%"
-          cy="50%"
-          outerRadius={100}
-          label
-        >
+        <PieChart>
 
-          {expenses.map((entry, index) => (
+          <Pie
+            data={categoryData}
+            dataKey="value"
+            nameKey="name"
+            outerRadius={120}
+            label
+          >
 
-            <Cell
-              key={index}
-              fill={COLORS[index % COLORS.length]}
-            />
+            {categoryData.map((entry, index) => (
 
-          ))}
+              <Cell
+                key={index}
+                fill={COLORS[index % COLORS.length]}
+              />
 
-        </Pie>
+            ))}
 
-        <Tooltip />
+          </Pie>
 
-        <Legend />
+          <Tooltip />
 
-      </PieChart>
+        </PieChart>
+
+      </ResponsiveContainer>
 
     </div>
 

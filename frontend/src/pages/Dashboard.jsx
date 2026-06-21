@@ -4,135 +4,110 @@ import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
 import Navbar from "../components/Navbar";
 import BudgetForm from "../components/BudgetForm";
+import DashboardCards from "../components/DashboardCards";
 
 function Dashboard() {
 
-    const [dashboardData, setDashboardData] = useState({});
+  const [dashboardData, setDashboardData] = useState({});
+  const [expenses, setExpenses] = useState([]);
 
-    useEffect(() => {
+  const fetchDashboard = async () => {
 
-        const fetchDashboard = async () => {
+    try {
 
-            try {
+      const token = localStorage.getItem("token");
 
-                const token = localStorage.getItem("token");
+      const response = await api.get(
+        "/dashboard",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
-                const response = await api.get(
-                    "/dashboard",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                );
+      setDashboardData(response.data);
 
-                setDashboardData(response.data);
+    }
 
-            }
+    catch (error) {
 
-            catch (error) {
+      console.log(error);
 
-                console.log(error);
+    }
 
-            }
+  };
 
-        };
+  const fetchExpenses = async () => {
 
-        fetchDashboard();
+    try {
 
-    }, []);
+      const token = localStorage.getItem("token");
 
-    return (
-        <>
-            <Navbar />
+      const response = await api.get(
+        "/expenses",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
-            <div className="container">
+      setExpenses(response.data);
 
-               
-                <div className="container mt-4">
+    }
 
-                    
+    catch (error) {
 
-                    <div className="row">
+      console.log(error);
 
-                        <div className="col-md-3">
-                            <div
-                                className="card mb-3"
-                                style={{
-                                    backgroundColor: "#46cbff",
-                                    border: "none"
-                                }}
-                            >
-                                <div className="card-body">
-                                    <h5>Total Expense</h5>
-                                    <h3>₹{dashboardData.total_expense}</h3>
-                                </div>
-                            </div>
-                        </div>
+    }
 
-                        <div className="col-md-3">
-                            <div
-                                className="card mb-3"
-                                style={{
-                                    backgroundColor: "#46cbff",
-                                    border: "none"
-                                }}
-                            >
-                                <div className="card-body">
-                                    <h5>Monthly Budget</h5>
-                                    <h3>₹{dashboardData.monthly_budget}</h3>
-                                </div>
-                            </div>
-                        </div>
+  };
 
-                        <div className="col-md-3">
-                            <div
-                                className="card mb-3"
-                                style={{
-                                    backgroundColor: "#46cbff",
-                                    border: "none"
-                                }}
-                            >
-                                <div className="card-body">
-                                    <h5>Remaining Budget</h5>
-                                    <h3>₹{dashboardData.remaining_budget}</h3>
-                                </div>
-                            </div>
-                        </div>
+  useEffect(() => {
 
-                        <div className="col-md-3">
-                            <div
-                                className="card mb-3"
-                                style={{
-                                    backgroundColor: "#46cbff",
-                                    border: "none"
-                                }}
-                            >
-                                <div className="card-body">
-                                    <h5>Expense Count</h5>
-                                    <h3>{dashboardData.expense_count}</h3>
-                                </div>
-                            </div>
-                        </div>
+    fetchDashboard();
+    fetchExpenses();
 
-                    </div>
+  }, []);
 
-                </div>
-                <BudgetForm />
+  return (
 
-<hr />
+    <>
+      <Navbar />
 
-<ExpenseForm />
+      <div className="container">
 
-<hr />
+        <div className="container mt-4">
 
-<ExpenseList />
-            </div>
+          <DashboardCards dashboardData={dashboardData} />
 
+        </div>
 
+        <BudgetForm fetchDashboard={fetchDashboard} />
 
-        </>
-    );
+        <hr />
+
+        <ExpenseForm
+            fetchDashboard={fetchDashboard}
+            />
+        
+
+        <hr />
+
+        <ExpenseList
+          expenses={expenses}
+          fetchExpenses={fetchExpenses}
+          fetchDashboard={fetchDashboard}
+        />
+
+      </div>
+
+    </>
+
+  );
+
 }
 
 export default Dashboard;

@@ -1,117 +1,179 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
-function ExpenseList() {
+function ExpenseList({ fetchDashboard }) {
 
   const [expenses, setExpenses] = useState([]);
 
-  useEffect(() => {
+  const fetchExpenses = async () => {
 
-    const fetchExpenses = async () => {
+    try {
 
-      try {
+      const token = localStorage.getItem("token");
 
-        const token = localStorage.getItem("token");
-
-        const response = await api.get(
-          "/expenses",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+      const response = await api.get(
+        "/expenses",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        );
+        }
+      );
 
-        setExpenses(response.data);
-        
+      setExpenses(response.data);
 
-      } catch (error) {
+    }
 
-        console.log(error);
+    catch (error) {
 
-      }
+      console.log(error);
 
-    };
+    }
+
+  };
+
+  useEffect(() => {
 
     fetchExpenses();
 
   }, []);
+
   const handleDelete = async (id) => {
 
-  try {
+    try {
 
-    const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-    await api.delete(
-      `/expense/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
+      await api.delete(
+        `/expense/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      }
-    );
+      );
 
-    setExpenses(
-      expenses.filter(
-        (expense) => expense.id !== id
-      )
-    );
+      await fetchExpenses();
+      fetchDashboard();
 
-  }
+    }
 
-  catch (error) {
+    catch (error) {
 
-    console.log(error);
+      console.log(error);
 
-  }
+    }
 
-};
+  };
 
-return (
-  <>
-    <h2 className="mt-4">Expenses</h2>
+  return (
+    // keep your existing JSX
+    
 
-    <table className="table table-hover shadow-sm">
-      <thead className="table-light">
-        <tr>
-          <th>Category</th>
-          <th>Amount</th>
-          <th>Description</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+    <div
+      className="card shadow-lg mt-4"
+      style={{
+        background: "#1E293B",
+        borderRadius: "24px",
+        border: "1px solid rgba(255,255,255,0.08)"
+      }}
+    >
 
-      <tbody>
-        {expenses.map((expense) => (
+      <div className="card-body">
 
-          <tr key={expense.id}>
+        <h3
+          className="mb-4"
+          style={{
+            color: "#F8FAFC",
+            fontWeight: "700"
+          }}
+        >
+          Recent Expenses
+        </h3>
 
-            <td>{expense.category}</td>
+        <div className="table-responsive">
 
-            <td>₹{expense.amount}</td>
+          <table
+            className="table align-middle"
+            style={{
+              color: "#F8FAFC"
+            }}
+          >
 
-            <td>{expense.description}</td>
+            <thead
+              style={{
+                background: "#0F172A",
+                color: "#94A3B8"
+              }}
+            >
+              <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th></th>
+              </tr>
+            </thead>
 
-            <td>
+            <tbody>
 
-              <button
-                className="btn btn-danger btn-sm"
-                onClick={() => handleDelete(expense.id)}
-              >
-                Delete
-              </button>
+              {expenses.map((expense) => (
 
-            </td>
+                <tr
+                  key={expense.id}
+                  style={{
+                    background: "#1E293B",
+                    color: "#F8FAFC"
+                  }}
+                >
 
-          </tr>
+                  <td>{expense.category}</td>
 
-        ))}
-      </tbody>
+                  <td
+                    style={{
+                      color: "#10B981",
+                      fontWeight: "600"
+                    }}
+                  >
+                    ₹{expense.amount}
+                  </td>
 
-    </table>
+                  <td>{expense.description}</td>
 
-  </>
-);
+                  <td>
+
+                    <button
+                      className="btn btn-sm"
+                      style={{
+                        background: "#EF4444",
+                        color: "white",
+                        borderRadius: "12px"
+                      }}
+                      onClick={() => handleDelete(expense.id)}
+                    >
+                      Delete
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  );
+  
 }
 
 export default ExpenseList;
+
+
+
